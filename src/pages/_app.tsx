@@ -10,9 +10,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+
+  const getLayout =
+    //@ts-ignore
+    (Component?.getLayout as unknown) ?? ((page: unknown) => page);
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      {
+        //@ts-ignore
+        getLayout(<Component {...pageProps} />)
+      }
+
     </SessionProvider>
   );
 };
