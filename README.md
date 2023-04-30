@@ -1,3 +1,17 @@
+# Auth session handle to work with middleware solution
+Steps to manage it:
+- create a file to /pages/api/authSSR.ts
+
+```
+export default async function handle(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    const session = await getSession({ req });
+    res.json({ data: { auth: !!session } });
+}
+
+```
 # Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
