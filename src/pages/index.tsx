@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -7,7 +6,8 @@ import { api } from "~/utils/api";
 import { Button } from "components/ui/button";
 import { CalendarDatePicker } from "components/DatePicker";
 import PublicLayout from "components/layouts/PublicLayout";
-import Header from "./Header";
+import Header from "components/layouts/Header";
+
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });

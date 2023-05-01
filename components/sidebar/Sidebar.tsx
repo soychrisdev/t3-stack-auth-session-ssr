@@ -1,6 +1,5 @@
 import { Button } from "components/ui/button";
-import { HomeIcon } from "lucide-react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { menu } from "~/utils/menu";
@@ -8,8 +7,6 @@ import { menu } from "~/utils/menu";
 interface SidebarProps {
     children: ReactNode;
 }
-
-
 
 export default function Sidebar({ children }: SidebarProps) {
     return (

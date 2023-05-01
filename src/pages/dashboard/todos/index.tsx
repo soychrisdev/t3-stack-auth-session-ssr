@@ -1,14 +1,14 @@
 import Header from "components/layouts/Header";
 import ProtectedLayout from "components/layouts/ProtectedLayout";
 
-export default function Dashboard() {
-    return <>
-        <Header title={'Dashboard'} />
-        Dashboard
-    </>
+export default function Todos() {
+    return (<>
+        <Header title={'Todos'} />
+        Todos web page
+    </>)
 }
 
-Dashboard.getLayout = (page: any) => (
+Todos.getLayout = (page: any) => (
     <ProtectedLayout>
         {page}
     </ProtectedLayout>
