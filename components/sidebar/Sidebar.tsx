@@ -19,7 +19,7 @@ export default function Sidebar({ children }: SidebarProps) {
                     <div className="flex-1">
                         <ul className="pt-2 pb-4 space-y-1 text-sm">
                             {menu.map(({ icon, name, to }) => (
-                                <li className="rounded-sm">
+                                <li key={name} className="rounded-sm">
                                     <Link
                                         href={to}
                                         className="flex items-center p-2 space-x-3 rounded-md"
