@@ -1,5 +1,6 @@
 import Header from "components/layouts/Header";
 import ProtectedLayout from "components/layouts/ProtectedLayout";
+import Todo from "components/todo/Todo";
 import { TodoEditDialog } from "components/todo/TodoEditDialog";
 import { Badge } from "components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card";
@@ -18,43 +19,8 @@ export default function Todos() {
     )
     return (<>
         <Header title={'Todos'} />
-        <div className="flex">
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
+        <Todo data={data} />
 
-
-                {data ? data.map(({ title, authorId, createdAt, description, published, id, state, updatedAt }) => (
-                    <Card key={id} className="m-2 w-full">
-                        <CardHeader>
-                            <CardTitle className="flex justify-between">
-                                <div>
-                                    {title}
-                                </div>
-                                <div>
-                                    <Badge>{state.toLocaleLowerCase()}</Badge>
-
-                                </div>
-                            </CardTitle>
-                            <CardDescription>{description} - {published ? 'public' : 'private'}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            contenido
-                        </CardContent>
-                        <CardFooter className="flex justify-between">
-                            <div>
-                                {updatedAt.toISOString().split('T')[0]}
-                            </div>
-                            <div>
-                                <TodoEditDialog key={id} title={title} description={description} state={state} published={published} id={id} />
-                            </div>
-                        </CardFooter>
-                    </Card>
-                )
-                ) :
-                    'no data'}
-
-            </div>
-
-        </div>
     </>)
 }
 

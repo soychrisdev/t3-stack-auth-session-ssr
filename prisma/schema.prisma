@@ -56,7 +56,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    role          Role      @default(USER)
+    role          String?   @default("USER")
     todos         Todo[]
 }
 
@@ -69,26 +69,13 @@ model VerificationToken {
 }
 
 model Todo {
-    id          String    @id @default(cuid())
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    published   Boolean   @default(false)
-    title       String    @db.VarChar(255)
-    state       TodoState @default(DOING)
-    description String    @db.VarChar(255)
-    author      User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    id          String   @id @default(cuid())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    published   String   @default("false")
+    title       String   @db.VarChar(255)
+    state       String   @default("DOING")
+    description String   @db.VarChar(255)
+    author      User?    @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId    String?
-}
-
-enum Role {
-    USER
-    MODERATOR
-    ADMIN
-    DEMO
-}
-
-enum TodoState {
-    DOING
-    DONE
-    STANDBY
 }

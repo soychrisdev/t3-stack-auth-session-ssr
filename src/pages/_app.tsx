@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
+import { Toaster } from "components/Toaster";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -20,6 +21,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         //@ts-ignore
         getLayout(<Component {...pageProps} />)
       }
+      <Toaster />
 
     </SessionProvider>
   );

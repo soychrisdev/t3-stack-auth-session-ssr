@@ -19,9 +19,9 @@ export const todosRouter = createTRPCRouter({
   mutateTodo: protectedProcedure.input(z.object({
     id: z.string(),
     updatedAt: z.date(),
-    published: z.boolean(),
+    published: z.string(),
     title: z.string(),
-    state: z.enum(['DOING', 'DONE', 'STANDBY']),
+    state: z.string(),
     description: z.string(),
   })).mutation(({ ctx, input }) => {
     const { id, updatedAt, published, title, state, description } = input;

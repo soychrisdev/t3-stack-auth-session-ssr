@@ -6,10 +6,15 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { EditIcon } from 'lucide-react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "components/ui/select"
 import { api } from "~/utils/api"
-import { FormEvent, useState } from "react"
-export function TodoEditDialog({ title, description, published, id, state }: { title: string, id: string, published: boolean, description: string, state: string }) {
+import { FormEvent, useRef, useState } from "react"
+import { useToast } from "components/ui/use-toast"
 
+
+export function TodoEditDialog({ title, description, published, id, state }: { title: string, id: string, published: string, description: string, state: string }) {
+    const { toast } = useToast()
     const [open, setOpen] = useState(false);
+    const [stateValue, setStateValue] = useState(state)
+    const [publishedValue, setPublishedValue] = useState(published)
     const trpc = api.useContext();
     const postTodo = api.todos.mutateTodo.useMutation({
         onMutate: async ({ description, id, published, state, title, updatedAt }) => {
@@ -39,10 +44,26 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
         },
         onSuccess: (err) => {
             setOpen(false)
+            toast({
+                title: "Task updated!",
+                description: "Task updated success!",
+
+            })
         },
         onSettled: async () => {
             await trpc.todos.getTodosById.invalidate();
+
         },
+
+        onError: (err) => {
+            toast({
+                variant: "destructive",
+                title: "Ops! Update failed",
+                description: { err },
+
+            })
+        },
+
     })
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -50,8 +71,7 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
             id: HTMLInputElement;
             title: HTMLInputElement;
             description: HTMLTextAreaElement;
-            state: HTMLSelectElement;
-            published: HTMLInputElement;
+
         }
 
         event.preventDefault();
@@ -60,8 +80,7 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
             id: elements.id.value,
             title: elements.title.value,
             description: elements.description.value,
-            state: elements.state?.value || 'DOING',
-            published: elements.published?.value || true,
+
         };
 
         // alert(`Here's your data: ${JSON.stringify(data, undefined, 2)}`);
@@ -70,8 +89,8 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
             id: data.id,
             title: data.title,
             description: data.description,
-            state: "DOING",
-            published: true,
+            state: stateValue,
+            published: publishedValue,
             updatedAt: date
         })
 
@@ -115,11 +134,11 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
                             <Label htmlFor="state" className="text-right">
                                 state
                             </Label>
-                            <Select id="state">
+                            <Select value={stateValue} onValueChange={setStateValue} required>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a state" />
                                 </SelectTrigger>
-                                <SelectContent >
+                                <SelectContent  >
                                     <SelectGroup >
                                         <SelectItem value="DOING">DOING</SelectItem>
                                         <SelectItem value="DONE">DONE</SelectItem>
@@ -132,14 +151,14 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
                             <Label htmlFor="published" className="text-right">
                                 published
                             </Label>
-                            <Select id="published">
+                            <Select value={publishedValue} onValueChange={setPublishedValue}>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a publish" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectItem value="private">private</SelectItem>
-                                        <SelectItem value="public">public</SelectItem>
+                                        <SelectItem value={"false"}>private</SelectItem>
+                                        <SelectItem value={"true"}>public</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -149,7 +168,7 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
                     </div>
 
                     <DialogFooter>
-                        <Button type="submit" >Save changes</Button>
+                        <Button type="submit" >Update todo!</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
