@@ -10,7 +10,7 @@ export default function Todo({ data }: { data: ITodo[] }) {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
 
 
-                {data ? data.map(({ title, authorId, createdAt, description, published, id, state, updatedAt }) => (
+                {data?.map(({ title, authorId, createdAt, description, published, id, state, updatedAt }) => (
                     <Card key={id} className="w-full hover:bg-slate-50">
                         <CardHeader>
                             <CardTitle className="flex justify-between">
@@ -25,7 +25,7 @@ export default function Todo({ data }: { data: ITodo[] }) {
                             <CardDescription>{description} - {published}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            contenido
+                            content
                         </CardContent>
                         <CardFooter className="flex justify-between">
                             <div>
@@ -37,8 +37,7 @@ export default function Todo({ data }: { data: ITodo[] }) {
                         </CardFooter>
                     </Card>
                 )
-                ) :
-                    'no data'}
+                ) }
 
             </div>
 

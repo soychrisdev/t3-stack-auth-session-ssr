@@ -6,6 +6,8 @@ import { Badge } from "components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import {clearGlobCache} from "@typescript-eslint/typescript-estree/dist/parseSettings/resolveProjectList";
+import {TodoCreateDialog} from "../../../../components/todo/TodoCreateDialog";
 
 export default function Todos() {
     // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
@@ -13,13 +15,18 @@ export default function Todos() {
     //     { enabled: sessionData?.user !== undefined },
     const { data: sessionData } = useSession();
     //   );
-    const { data } = api.todos.getTodosById.useQuery(
+    const { data, isLoading } = api.todos.getTodosById.useQuery(
         undefined,
         { enabled: sessionData?.user !== undefined }
     )
+
+
     return (<>
         <Header title={'Todos'} />
-        <Todo data={data} />
+        <TodoCreateDialog/>
+
+        <Todo data={data}/>
+
 
     </>)
 }

@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import {
   createTRPCRouter,
-  publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
 
@@ -20,9 +19,9 @@ export const todosRouter = createTRPCRouter({
     id: z.string(),
     updatedAt: z.date(),
     published: z.string(),
-    title: z.string(),
-    state: z.string(),
-    description: z.string(),
+    title: z.string().min(1),
+    state: z.string().min(1),
+    description: z.string().min(1),
   })).mutation(({ ctx, input }) => {
     const { id, updatedAt, published, title, state, description } = input;
 
@@ -33,8 +32,23 @@ export const todosRouter = createTRPCRouter({
       data: {
         updatedAt, published, title, state, description
       },
+
     })
-  })
+  }),
+  createTodo: protectedProcedure.input(z.object({
+    published: z.string(),
+    title: z.string().min(1),
+    state: z.string().min(1),
+    description: z.string().min(1),
+  })).mutation(async ({ ctx, input }) => {
+    const task = await ctx.prisma.todo.create({
+      data: {
+        ...input,
+        authorId: ctx.session.user.id,
+      },
+    });
+    return task;
+  }),
 
 
 });

@@ -60,6 +60,7 @@ const Home: NextPage = () => {
   );
 };
 
+// @ts-ignore
 Home.getLayout = (page: any) => (
   <PublicLayout>
     {page}

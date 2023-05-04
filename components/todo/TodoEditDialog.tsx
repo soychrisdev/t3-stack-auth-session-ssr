@@ -16,7 +16,7 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
     const [stateValue, setStateValue] = useState(state)
     const [publishedValue, setPublishedValue] = useState(published)
     const trpc = api.useContext();
-    const postTodo = api.todos.mutateTodo.useMutation({
+    const updateTodo = api.todos.mutateTodo.useMutation({
         onMutate: async ({ description, id, published, state, title, updatedAt }) => {
             await trpc.todos.getTodosById.cancel();
 
@@ -85,7 +85,7 @@ export function TodoEditDialog({ title, description, published, id, state }: { t
 
         // alert(`Here's your data: ${JSON.stringify(data, undefined, 2)}`);
         const date = new Date();
-        return postTodo.mutate({
+        return updateTodo.mutate({
             id: data.id,
             title: data.title,
             description: data.description,
